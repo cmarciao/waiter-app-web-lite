@@ -1,15 +1,15 @@
-import { GlobalStyles } from "./styles/GlobalStyles";
+import { GlobalStyles } from './styles/GlobalStyles';
 
-import { Header } from "./components/Header";
-import { Orders } from "./components/Orders";
+import { Header } from './components/Header';
+import { Orders } from './components/Orders';
 
 export function App() {
-  return (
-    <>
-        <GlobalStyles />
+    return (
+        <>
+            <GlobalStyles />
 
-        <Header />
-        <Orders />
-    </>
-  );
+            <Header />
+            <Orders />
+        </>
+    );
 }

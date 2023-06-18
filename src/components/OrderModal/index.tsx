@@ -5,7 +5,7 @@ import closeImg from '../../assets/images/close-icon.svg';
 
 import { formatCurrency } from '../../utils/formatCurrency';
 
-import { ModalBody, OrderDetails, Overlay, Actions } from "./styles";
+import { ModalBody, OrderDetails, Overlay, Actions } from './styles';
 import { useEffect } from 'react';
 
 interface OrderModalProps {
@@ -26,7 +26,7 @@ export function OrderModal({ isVisible, order, onClose }: OrderModalProps) {
 
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
-        }
+        };
     }, [onClose]);
 
     if(!isVisible || !order) {

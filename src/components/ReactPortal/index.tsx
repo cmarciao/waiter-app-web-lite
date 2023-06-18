@@ -11,7 +11,7 @@ export function ReactPortal({ containerId, children }: ReactPortalProps) {
     if(!container) {
         container = document.createElement('div');
         container.setAttribute('id', containerId);
-        document.body.appendChild(container)
+        document.body.appendChild(container);
     }
 
     return ReactDOM.createPortal(

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Order } from "../../types/Order";
-import { OrderModal } from "../OrderModal";
-import { Container, OrdersContainer } from "./styles";
+import { useState } from 'react';
+import { Order } from '../../types/Order';
+import { OrderModal } from '../OrderModal';
+import { Container, OrdersContainer } from './styles';
 
 interface OrdersBoardProps {
     icon: string;
@@ -33,17 +33,17 @@ export function OrdersBoard({ icon, title, orders }: OrdersBoardProps) {
 
             {orders.length > 0 && (
                 <OrdersContainer>
-                {orders.map((order) => (
-                    <button
-                        key={order._id}
-                        type="button"
-                        onClick={() => handleOpenOrderModal(order)}
-                    >
-                        <strong>{order.table}</strong>
-                        <span>{order.products.length} itens</span>
-                    </button>
-                ))}
-            </OrdersContainer>
+                    {orders.map((order) => (
+                        <button
+                            key={order._id}
+                            type="button"
+                            onClick={() => handleOpenOrderModal(order)}
+                        >
+                            <strong>{order.table}</strong>
+                            <span>{order.products.length} itens</span>
+                        </button>
+                    ))}
+                </OrdersContainer>
             )}
 
             <OrderModal
@@ -53,5 +53,5 @@ export function OrdersBoard({ icon, title, orders }: OrdersBoardProps) {
             />
 
         </Container>
-    )
+    );
 }
