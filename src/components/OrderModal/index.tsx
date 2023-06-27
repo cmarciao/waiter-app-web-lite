@@ -12,9 +12,12 @@ interface OrderModalProps {
     isVisible: boolean;
     order: Order | null;
     onClose: () => void;
+    onCancelOrder: () => void;
+    isLoading: boolean;
+    onChangeOrderStatus: () => void;
 }
 
-export function OrderModal({ isVisible, order, onClose }: OrderModalProps) {
+export function OrderModal({ isVisible, order, onClose, onCancelOrder, isLoading, onChangeOrderStatus }: OrderModalProps) {
     useEffect(() => {
         function handleKeyDown(event: KeyboardEvent) {
             if(event.key === 'Escape') {
@@ -95,19 +98,31 @@ export function OrderModal({ isVisible, order, onClose }: OrderModalProps) {
                     </OrderDetails>
 
                     <Actions>
-                        <button type='button' className='primary'>
-                            <span>
-                                {order.status === 'WAITING' && '👨‍🍳'}
-                                {order.status === 'IN_PRODUCTION' && '✅'}
-                            </span>
+                        {order.status !== 'DONE' && (
+                            <button
+                                type='button'
+                                className='primary'
+                                onClick={onChangeOrderStatus}
+                                disabled={isLoading}
+                            >
+                                <span>
+                                    {order.status === 'WAITING' && '👨‍🍳'}
+                                    {order.status === 'IN_PRODUCTION' && '✅'}
+                                </span>
 
-                            <strong>
-                                {order.status === 'WAITING' && 'Iniciar Produção'}
-                                {order.status === 'IN_PRODUCTION' && 'Finalizar pedido'}
-                            </strong>
-                        </button>
+                                <strong>
+                                    {order.status === 'WAITING' && 'Iniciar Produção'}
+                                    {order.status === 'IN_PRODUCTION' && 'Concluir pedido'}
+                                </strong>
+                            </button>
+                        )}
 
-                        <button type='button' className='secondary'>
+                        <button
+                            type='button'
+                            className='secondary'
+                            onClick={onCancelOrder}
+                            disabled={isLoading}
+                        >
                             Cancelar pedido
                         </button>
                     </Actions>
