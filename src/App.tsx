@@ -2,6 +2,7 @@ import { GlobalStyles } from './styles/GlobalStyles';
 
 import { Header } from './components/Header';
 import { Orders } from './components/Orders';
+import { ToastContainer } from './components/Toast/ToastContainer';
 
 export function App() {
     return (
@@ -10,6 +11,7 @@ export function App() {
 
             <Header />
             <Orders />
+            <ToastContainer />
         </>
     );
 }
