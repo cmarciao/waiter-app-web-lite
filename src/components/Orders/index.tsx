@@ -1,54 +1,78 @@
+import { useEffect, useState } from 'react';
 import { OrdersBoard } from '../OrdersBoard';
-import { Order } from '../../types/Order';
 import { Container } from './styles';
-
-const mockedOrders: Order[] = [
-    {
-        _id: '6372e48cbcd195b0d3d0f7f3',
-        table: '123',
-        status: 'WAITING',
-        products: [
-            {
-                product: {
-                    name: 'Pizza quatro queijos',
-                    imagePath: '1686974981424-quatro-queijos.png',
-                    price: 40,
-                },
-                quantity: 3,
-                _id: '6372e48cbcd195b0d3d0f7f4'
-            },
-            {
-                product: {
-                    name: 'Coca cola',
-                    imagePath: '1686974981424-quatro-queijos.png',
-                    price: 7,
-                },
-                quantity: 2,
-                _id: '6372e48cbcd195b0d3d0f7f5'
-            }
-        ],
-    }
-];
+import { Order } from '../../types/Order';
+import OrderService from '../../services/OrderService';
+import socketIo from 'socket.io-client';
 
 export function Orders() {
+    const [orders, setOrders] = useState<Order[]>([]);
+
+    useEffect(() => {
+        const socket = socketIo('http://localhost:3001', {
+            transports: ['websocket']
+        });
+
+        socket.on('orders@new', (order) => {
+            console.log(order);
+            setOrders((prevState) => [
+                ...prevState,
+                order
+            ]);
+        });
+    }, []);
+
+    useEffect(() => {
+        async function loadOrders() {
+            const orders = await OrderService.listOrders();
+            setOrders(orders);
+        }
+
+        loadOrders();
+    }, []);
+
+    const waitingOrders = orders.filter((order) => order.status === 'WAITING');
+    const inProductionOrders = orders.filter((order) => order.status === 'IN_PRODUCTION');
+    const doneOrders = orders.filter((order) => order.status === 'DONE');
+
+    function handleOrderStatusChange(orderId: string, status: Order['status']) {
+        setOrders((prevState) => prevState.map((order) => (
+            order._id === orderId
+                ? { ...order, status}
+                : order
+        )));
+    }
+
+    function handleCancelOrder(orderId: string) {
+        setOrders((prevState) =>
+            prevState.filter((order) => order._id !== orderId)
+        );
+    }
+
     return (
         <Container>
             <OrdersBoard
                 icon="🕕"
                 title="Fila de espera"
-                orders={mockedOrders}
+                orders={waitingOrders}
+                onCancelOrder={handleCancelOrder}
+                onChangeOrderStatus={handleOrderStatusChange}
             />
 
             <OrdersBoard
                 icon="👨‍🍳"
                 title="Em preparação"
-                orders={[]}
+                orders={inProductionOrders}
+                onCancelOrder={handleCancelOrder}
+                onChangeOrderStatus={handleOrderStatusChange}
             />
 
             <OrdersBoard
                 icon="✅"
                 title="Pronto"
-                orders={[]}
+                orders={doneOrders}
+                onCancelOrder={handleCancelOrder}
+                onChangeOrderStatus={handleOrderStatusChange}
             />
         </Container>
     );
