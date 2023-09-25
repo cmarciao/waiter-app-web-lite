@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { OrdersBoard } from '../OrdersBoard';
+import { OrdersBoard } from '../../components/OrdersBoard';
 import { Container } from './styles';
 import { Order } from '../../types/Order';
 import OrderService from '../../services/OrderService';
 import socketIo from 'socket.io-client';
+import { Header } from '../../components/Header';
 
 export function Orders() {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -50,30 +51,34 @@ export function Orders() {
     }
 
     return (
-        <Container>
-            <OrdersBoard
-                icon="🕕"
-                title="Fila de espera"
-                orders={waitingOrders}
-                onCancelOrder={handleCancelOrder}
-                onChangeOrderStatus={handleOrderStatusChange}
-            />
+        <>
+            <Header />
 
-            <OrdersBoard
-                icon="👨‍🍳"
-                title="Em preparação"
-                orders={inProductionOrders}
-                onCancelOrder={handleCancelOrder}
-                onChangeOrderStatus={handleOrderStatusChange}
-            />
+            <Container>
+                <OrdersBoard
+                    icon="🕕"
+                    title="Fila de espera"
+                    orders={waitingOrders}
+                    onCancelOrder={handleCancelOrder}
+                    onChangeOrderStatus={handleOrderStatusChange}
+                />
 
-            <OrdersBoard
-                icon="✅"
-                title="Pronto"
-                orders={doneOrders}
-                onCancelOrder={handleCancelOrder}
-                onChangeOrderStatus={handleOrderStatusChange}
-            />
-        </Container>
+                <OrdersBoard
+                    icon="👨‍🍳"
+                    title="Em preparação"
+                    orders={inProductionOrders}
+                    onCancelOrder={handleCancelOrder}
+                    onChangeOrderStatus={handleOrderStatusChange}
+                />
+
+                <OrdersBoard
+                    icon="✅"
+                    title="Pronto"
+                    orders={doneOrders}
+                    onCancelOrder={handleCancelOrder}
+                    onChangeOrderStatus={handleOrderStatusChange}
+                />
+            </Container>
+        </>
     );
 }
